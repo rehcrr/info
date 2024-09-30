@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef enum _kState
+{
+    FIND,
+    Swaper,
+    Space
+} kState;
+
+int main(void)
+{
+    char ch;
+    kState state = FIND;
+    char array[1000] = { 0 };
+    int index = 0;
+    char prev_ch = '\n';
+
+    while ((ch = getchar()) != EOF)
+    {
+        switch (state)
+        {
+        case FIND:
+        {
+            if ((ch != '\n') || (prev_ch == '\n'))
+            {
+                array[index] = ch;
+                prev_ch = ch;
+                index++;
+            }
+            else {
+                array[index] = ' ';
+                prev_ch = ' ';
+                index++;
+                state = Swaper;
+            }
+        }
+        break;
+
+        case Swaper:
+        {
+            if (prev_ch == ' ' && ch == '\n') {
+                array[index] = '\n'; 
+                array[index - 1] = '\n'; 
+                prev_ch = '\n';
+                index += 1;
+                state = FIND;
+            }
+            else if (prev_ch == '\n') {
+                array[index] = '\n';
+                prev_ch = '\n';
+                index++;
+                state = FIND;
+            }
+            else {
+                array[index] = ch;
+                prev_ch = ch;
+                index++;
+                state = FIND;
+
+            }
+
+        }
+        break;
+        }
+    }
+
+    array[index] = '\0';
+
+    printf("%s\n", array);
+
+    return 0;
+}
